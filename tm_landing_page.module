@@ -1,0 +1,42 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Core\Entity\ContentEntityInterface;
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function tm_landing_page_language_switch_links_alter(array &$links, $type, Url $url) {
+  $currentLangcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+
+  $params = \Drupal::routeMatch()->getParameters()->all();
+  $entity = reset($params);
+
+  // Overwrite only if a content entity and only if provided entity ids present
+
+ if ($entity instanceof ContentEntityInterface) {
+
+    if ($entity->id() == 50 || $entity->id() == 51) {
+ 
+      // Please add your languages here
+      // $links['en'], $links['de'], etc.
+      // and enter the number of the node for the language
+ 
+      $links['en']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 50]);
+      $links['es']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 51]);
+
+    }
+
+  }
+
+  foreach ($links as $langcode => &$link) {
+    $link['attributes']['title'] = $link['title'];
+    $link['title'] .= " (${langcode})";
+    $link['attributes']['class'][] = $langcode === $currentLangcode ? 'active' : NULL;
+  }
+
+
+}
+
+

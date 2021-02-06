@@ -1,0 +1,7 @@
+tm_landing_page.content:
+  path: '/landing-page' 
+  defaults: 
+    _controller: '\Drupal\tm_landing_page\Controller\TmLandingPageController::redirectToNode' 
+    _title: 'Landing Page'
+  requirements: 
+    _permission: 'access content' 

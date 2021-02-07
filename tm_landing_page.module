@@ -17,14 +17,14 @@ function tm_landing_page_language_switch_links_alter(array &$links, $type, Url $
 
  if ($entity instanceof ContentEntityInterface) {
 
-    if ($entity->id() == 50 || $entity->id() == 51) {
+    if ($entity->id() == 24 || $entity->id() == 25) {
  
       // Please add your languages here
       // $links['en'], $links['de'], etc.
       // and enter the number of the node for the language
  
-      $links['en']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 50]);
-      $links['es']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 51]);
+      $links['en']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 24]);
+      $links['es']['url'] = Url::fromRoute('entity.node.canonical', ['node' => 25]);
 
     }
 
@@ -38,5 +38,31 @@ function tm_landing_page_language_switch_links_alter(array &$links, $type, Url $
 
 
 }
+
+
+/**
+* Implements hook_preprocess_menu() for menu.html.twig.
+*
+* Using this hook sets the in_active_trail on our
+* redirected front page. Please make sure you set the proper
+* paths here.
+*/
+function tm_landing_page_preprocess_menu(&$variables, $hook) {
+  // We only need our main navigation
+  if ($hook == 'menu__main') {
+    // Get the current path and act only if on our fake frontpages
+    $current_path = \Drupal::request()->getRequestUri();
+    
+    if ($current_path == '/node/24' || $current_path == '/node/25') {
+      $items = $variables['items'];
+      foreach ($items as $key => $item) {
+        if ($item['url']->getRouteName() === '<front>') {
+	        $variables['items'][$key]['in_active_trail'] = TRUE;
+        }	
+      } 
+    }  
+  }
+}
+
 
 

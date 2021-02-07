@@ -19,8 +19,8 @@ class TmLandingPageController extends ControllerBase {
     $route_name = 'entity.node.canonical';
 
     $content = [
-      'es' => 51,
-      'en' => 50,
+      'es' => 24,
+      'en' => 25,
     ];
 
     if ($logged_in) {
